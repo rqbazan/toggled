@@ -27,7 +27,7 @@
     "prepare": "tsdx build",
     "size": "size-limit",
     "analyze": "size-limit --why",
-    "prettier": "prettier \"**/*.{ts,tsx,json}\"",
+    "prettier": "prettier --ignore-path .gitignore \"**/*.{ts,tsx,json}\"",
     "format": "yarn prettier --write",
     "check-format": "yarn prettier --list-different"
   },
