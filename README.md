@@ -6,6 +6,21 @@
   Feature Flags
 </h1>
 
+<p align="center">
+  <a href="https://npmjs.org/package/@rqbazan/ff">
+    <img alt="NPM version" src="https://img.shields.io/npm/v/@rqbazan/ff.svg?style=for-the-badge">
+  </a>
+  <a href="https://github.com/rqbazan/ff">
+    <img alt="LICENSE" src="https://img.shields.io/github/license/rqbazan/ff?style=for-the-badge">
+  </a>
+  <a href="https://github.com/rqbazan/ff/actions/workflows/main.yml">
+    <img alt="CI" src="https://img.shields.io/github/workflow/status/rqbazan/ff/CI?label=CI&style=for-the-badge">
+  </a>
+  <a href="https://david-dm.org/rqbazan/ff">
+    <img alt="Dependencies" src="https://img.shields.io/david/rqbazan/ff.svg?style=for-the-badge">
+  </a>
+</p>
+
 Tiny library to use [feature flags](https://martinfowler.com/articles/feature-toggles.html) in React. Get features by its slug identifier or get a binary output using flag queries.
 
 ## Installation
