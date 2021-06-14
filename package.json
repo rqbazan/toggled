@@ -1,0 +1,72 @@
+{
+  "name": "@rqbazan/ff",
+  "author": {
+    "name": "Ricardo Q. Bazan",
+    "email": "raquirozbazan@gmail.com",
+    "url": "https://sxntixgo.codes"
+  },
+  "description": "Tiny library to use feature flags on React",
+  "version": "0.1.0",
+  "license": "UNLICENSED",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "module": "dist/ff.esm.js",
+  "files": [
+    "dist",
+    "src",
+    "logo"
+  ],
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "watch": "tsdx watch",
+    "build": "tsdx build",
+    "test": "tsdx test --passWithNoTests",
+    "lint": "tsdx lint",
+    "prepare": "tsdx build",
+    "size": "size-limit",
+    "analyze": "size-limit --why",
+    "prettier": "prettier \"**/*.{ts,tsx,json}\"",
+    "format": "yarn prettier --write",
+    "check-format": "yarn prettier --list-different"
+  },
+  "peerDependencies": {
+    "react": ">=16"
+  },
+  "devDependencies": {
+    "@size-limit/preset-small-lib": "^4.11.0",
+    "@testing-library/react-hooks": "^7.0.0",
+    "@types/react": "^17.0.9",
+    "@types/react-dom": "^17.0.6",
+    "husky": "^6.0.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "size-limit": "^4.11.0",
+    "tsdx": "^0.14.1",
+    "tslib": "^2.2.0",
+    "typescript": "^4.3.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "arrowParens": "avoid",
+    "trailingComma": "all",
+    "printWidth": 120
+  },
+  "size-limit": [
+    {
+      "path": "dist/ff.cjs.production.min.js",
+      "limit": "300 B"
+    },
+    {
+      "path": "dist/ff.esm.js",
+      "limit": "350 B"
+    }
+  ]
+}
