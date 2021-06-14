@@ -1,5 +1,6 @@
 {
   "name": "@rqbazan/ff",
+  "private": false,
   "author": {
     "name": "Ricardo Q. Bazan",
     "email": "raquirozbazan@gmail.com",
