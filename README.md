@@ -200,7 +200,3 @@ export default function App() {
   )
 }
 ```
-
-## License
-
-MIT @rqbazan
