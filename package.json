@@ -6,7 +6,7 @@
     "url": "https://sxntixgo.codes"
   },
   "description": "Tiny library to use feature flags on React",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "license": "UNLICENSED",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
