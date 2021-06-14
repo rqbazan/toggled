@@ -16,8 +16,8 @@
   <a href="https://github.com/rqbazan/ff/actions/workflows/main.yml">
     <img alt="CI" src="https://img.shields.io/github/workflow/status/rqbazan/ff/CI?label=CI&style=for-the-badge">
   </a>
-  <a href="https://david-dm.org/rqbazan/ff">
-    <img alt="Dependencies" src="https://img.shields.io/david/rqbazan/ff.svg?style=for-the-badge">
+  <a href="https://bundlephobia.com/package/@rqbazan/ff">
+    <img alt="Size" src="https://img.shields.io/bundlephobia/minzip/@rqbazan/ff?style=for-the-badge">
   </a>
 </p>
 
