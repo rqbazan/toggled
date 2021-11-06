@@ -55,7 +55,7 @@ export interface DefaultFeature {
 #### Example
 
 ```ts
-// src/types/ff.d.ts
+// src/types/featureflag.d.ts
 import 'featureflag'
 
 // extend the interface if needed
