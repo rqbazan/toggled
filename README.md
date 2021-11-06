@@ -1,5 +1,6 @@
 <p align="center">
-  <img src="./logo/256x256.png" alt="ff logo" width="150" />
+  <img src="./logo/toggle.png" height="128" />
+  <p align="center">Icons made by <a href="https://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></p>
 </p>
 
 <h1 align="center">
