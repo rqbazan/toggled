@@ -8,8 +8,8 @@
 </h1>
 
 <p align="center">
-  <a href="https://npmjs.org/package/featureflag">
-    <img alt="NPM version" src="https://img.shields.io/npm/v/featureflag.svg?style=for-the-badge">
+  <a href="https://npmjs.org/package/toggled">
+    <img alt="NPM version" src="https://img.shields.io/npm/v/toggled.svg?style=for-the-badge">
   </a>
   <a href="https://github.com/rqbazan/ff">
     <img alt="LICENSE" src="https://img.shields.io/github/license/rqbazan/ff?style=for-the-badge">
@@ -17,8 +17,8 @@
   <a href="https://github.com/rqbazan/ff/actions/workflows/main.yml">
     <img alt="CI" src="https://img.shields.io/github/workflow/status/rqbazan/ff/CI?label=CI&style=for-the-badge">
   </a>
-  <a href="https://bundlephobia.com/package/featureflag">
-    <img alt="Size" src="https://img.shields.io/bundlephobia/minzip/featureflag?style=for-the-badge">
+  <a href="https://bundlephobia.com/package/toggled">
+    <img alt="Size" src="https://img.shields.io/bundlephobia/minzip/toggled?style=for-the-badge">
   </a>
 </p>
 
@@ -29,13 +29,13 @@ Tiny library to use [feature flags](https://martinfowler.com/articles/feature-to
 NPM:
 
 ```sh
-npm i featureflag
+npm i toggled
 ```
 
 Yarn:
 
 ```sh
-yarn add featureflag
+yarn add toggled
 ```
 
 ## API
@@ -55,11 +55,11 @@ export interface DefaultFeature {
 #### Example
 
 ```ts
-// src/types/featureflag.d.ts
-import 'featureflag'
+// src/types/toggled.d.ts
+import 'toggled'
 
 // extend the interface if needed
-declare module 'featureflag' {
+declare module 'toggled' {
   export interface DefaultFeature {
     slug: string
     settings?: any
@@ -95,7 +95,7 @@ interface FeatureProviderProps<F extends DefaultFeature = DefaultFeature> {
 #### Example
 
 ```tsx
-import { FeatureProvider } from 'featureflag'
+import { FeatureProvider } from 'toggled'
 import apiClient from './api-client'
 import App from './app'
 
@@ -125,7 +125,7 @@ interface UseFeature<F extends DefaultFeature = DefaultFeature> {
 
 ```tsx
 // src/app.tsx
-import { useFeature } from 'featureflag'
+import { useFeature } from 'toggled'
 
 function App() {
   const themeFF = useFeature('theme')
@@ -157,7 +157,7 @@ interface UseFlagQuery {
 #### Example
 
 ```tsx
-import { useFlagQuery } from 'featureflag'
+import { useFlagQuery } from 'toggled'
 
 export default function App() {
   const flagQuery = useFlagQuery()
@@ -187,7 +187,7 @@ interface UseFlag {
 #### Example
 
 ```tsx
-import { useFlag } from 'featureflag'
+import { useFlag } from 'toggled'
 
 export default function App() {
   const hasChat = useFlag('chat')

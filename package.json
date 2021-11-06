@@ -1,10 +1,10 @@
 {
-  "name": "featureflag",
+  "name": "toggled",
   "private": false,
   "author": {
     "name": "Ricardo Q. Bazan",
     "email": "raquirozbazan@gmail.com",
-    "url": "https://sxntixgo.codes"
+    "url": "https://rcrd.space"
   },
   "description": "Tiny library to use feature flags on React",
   "version": "0.0.0-development",
@@ -15,7 +15,7 @@
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
-  "module": "dist/featureflag.esm.js",
+  "module": "dist/toggled.esm.js",
   "files": [
     "dist",
     "src",
@@ -71,11 +71,11 @@
   },
   "size-limit": [
     {
-      "path": "dist/featureflag.cjs.production.min.js",
+      "path": "dist/toggled.cjs.production.min.js",
       "limit": "300 B"
     },
     {
-      "path": "dist/featureflag.esm.js",
+      "path": "dist/toggled.esm.js",
       "limit": "350 B"
     }
   ]
