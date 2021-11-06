@@ -1,5 +1,6 @@
 <p align="center">
-  <img src="./logo/256x256.png" alt="ff logo" width="150" />
+  <img src="./logo/toggle.png" height="128" />
+  <p align="center">Icons made by <a href="https://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></p>
 </p>
 
 <h1 align="center">
@@ -7,8 +8,8 @@
 </h1>
 
 <p align="center">
-  <a href="https://npmjs.org/package/@rqbazan/ff">
-    <img alt="NPM version" src="https://img.shields.io/npm/v/@rqbazan/ff.svg?style=for-the-badge">
+  <a href="https://npmjs.org/package/featureflag">
+    <img alt="NPM version" src="https://img.shields.io/npm/v/featureflag.svg?style=for-the-badge">
   </a>
   <a href="https://github.com/rqbazan/ff">
     <img alt="LICENSE" src="https://img.shields.io/github/license/rqbazan/ff?style=for-the-badge">
@@ -16,8 +17,8 @@
   <a href="https://github.com/rqbazan/ff/actions/workflows/main.yml">
     <img alt="CI" src="https://img.shields.io/github/workflow/status/rqbazan/ff/CI?label=CI&style=for-the-badge">
   </a>
-  <a href="https://bundlephobia.com/package/@rqbazan/ff">
-    <img alt="Size" src="https://img.shields.io/bundlephobia/minzip/@rqbazan/ff?style=for-the-badge">
+  <a href="https://bundlephobia.com/package/featureflag">
+    <img alt="Size" src="https://img.shields.io/bundlephobia/minzip/featureflag?style=for-the-badge">
   </a>
 </p>
 
@@ -28,13 +29,13 @@ Tiny library to use [feature flags](https://martinfowler.com/articles/feature-to
 NPM:
 
 ```sh
-npm i @rqbazan/ff
+npm i featureflag
 ```
 
 Yarn:
 
 ```sh
-yarn add @rqbazan/ff
+yarn add featureflag
 ```
 
 ## API
@@ -54,11 +55,11 @@ export interface DefaultFeature {
 #### Example
 
 ```ts
-// src/types/ff.d.ts
-import '@rqbazan/ff'
+// src/types/featureflag.d.ts
+import 'featureflag'
 
 // extend the interface if needed
-declare module '@rqbazan/ff' {
+declare module 'featureflag' {
   export interface DefaultFeature {
     slug: string
     settings?: any
@@ -94,7 +95,7 @@ interface FeatureProviderProps<F extends DefaultFeature = DefaultFeature> {
 #### Example
 
 ```tsx
-import { FeatureProvider } from '@rqbazan/ff'
+import { FeatureProvider } from 'featureflag'
 import apiClient from './api-client'
 import App from './app'
 
@@ -124,7 +125,7 @@ interface UseFeature<F extends DefaultFeature = DefaultFeature> {
 
 ```tsx
 // src/app.tsx
-import { useFeature } from '@rqbazan/ff'
+import { useFeature } from 'featureflag'
 
 function App() {
   const themeFF = useFeature('theme')
@@ -156,7 +157,7 @@ interface UseFlagQuery {
 #### Example
 
 ```tsx
-import { useFlagQuery } from '@rqbazan/ff'
+import { useFlagQuery } from 'featureflag'
 
 export default function App() {
   const flagQuery = useFlagQuery()
@@ -186,7 +187,7 @@ interface UseFlag {
 #### Example
 
 ```tsx
-import { useFlag } from '@rqbazan/ff'
+import { useFlag } from 'featureflag'
 
 export default function App() {
   const hasChat = useFlag('chat')
