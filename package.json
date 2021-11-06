@@ -72,11 +72,11 @@
   "size-limit": [
     {
       "path": "dist/toggled.cjs.production.min.js",
-      "limit": "300 B"
+      "limit": "500 B"
     },
     {
       "path": "dist/toggled.esm.js",
-      "limit": "350 B"
+      "limit": "550 B"
     }
   ],
   "resolutions": {
