@@ -78,5 +78,8 @@
       "path": "dist/toggled.esm.js",
       "limit": "350 B"
     }
-  ]
+  ],
+  "resolutions": {
+    "tsdx/typescript": "^4.4.4"
+  }
 }
