@@ -11,11 +11,11 @@
   <a href="https://npmjs.org/package/toggled">
     <img alt="NPM version" src="https://img.shields.io/npm/v/toggled.svg?style=for-the-badge">
   </a>
-  <a href="https://github.com/rqbazan/ff">
-    <img alt="LICENSE" src="https://img.shields.io/github/license/rqbazan/ff?style=for-the-badge">
+  <a href="https://github.com/rqbazan/toggled">
+    <img alt="LICENSE" src="https://img.shields.io/github/license/rqbazan/toggled?style=for-the-badge">
   </a>
-  <a href="https://github.com/rqbazan/ff/actions/workflows/main.yml">
-    <img alt="CI" src="https://img.shields.io/github/workflow/status/rqbazan/ff/CI?label=CI&style=for-the-badge">
+  <a href="https://github.com/rqbazan/toggled/actions/workflows/main.yml">
+    <img alt="CI" src="https://img.shields.io/github/workflow/status/rqbazan/toggled/CI?label=CI&style=for-the-badge">
   </a>
   <a href="https://bundlephobia.com/package/toggled">
     <img alt="Size" src="https://img.shields.io/bundlephobia/minzip/toggled?style=for-the-badge">
