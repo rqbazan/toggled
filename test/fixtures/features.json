@@ -1,4 +1,5 @@
 [
   { "slug": "example-1", "settings": {} },
-  { "slug": "example-2", "settings": {} }
+  { "slug": "example-2", "settings": {} },
+  { "slug": "example-3", "settings": {} }
 ]

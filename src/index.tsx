@@ -9,13 +9,28 @@ export interface FeatureProviderProps<F extends DefaultFeature = DefaultFeature>
   children: React.ReactNode
 }
 
-export type FeatureQuery = string | { [slug: string]: boolean }
+export interface FeatureContextValue<F extends DefaultFeature = DefaultFeature> {
+  cache: Map<string, F>
+}
 
-const NO_PROVIDER = {}
+export const Operators = {
+  OR: Symbol('$or'),
+  AND: Symbol('$and'),
+}
+
+export type FlagQuery =
+  | string
+  | FlagQuery[]
+  | {
+      [slug: string]: boolean
+      [operator: symbol]: FlagQuery[]
+    }
+
+const NO_PROVIDER = Symbol('No provider')
 
 export const FeatureContext = React.createContext<any>(NO_PROVIDER)
 
-export function FeatureProvider<F extends DefaultFeature>(props: FeatureProviderProps<F>) {
+export function FeatureProvider<F extends DefaultFeature = DefaultFeature>(props: FeatureProviderProps<F>) {
   const { features, children } = props
 
   const contextValue = React.useMemo(() => {
@@ -28,8 +43,9 @@ export function FeatureProvider<F extends DefaultFeature>(props: FeatureProvider
 }
 
 function useFFContext() {
-  const contextValue = React.useContext(FeatureContext)
+  const contextValue = React.useContext<FeatureContextValue>(FeatureContext)
 
+  // @ts-ignore
   if (contextValue === NO_PROVIDER) {
     throw new Error('Component must be wrapped with FeatureProvider.')
   }
@@ -37,7 +53,7 @@ function useFFContext() {
   return contextValue
 }
 
-export function useFeature<F extends DefaultFeature = DefaultFeature>(slug: string): F | undefined {
+export function useFeature(slug: string) {
   const { cache } = useFFContext()
 
   return cache.get(slug)
@@ -46,13 +62,51 @@ export function useFeature<F extends DefaultFeature = DefaultFeature>(slug: stri
 export function useFlagQuery() {
   const { cache } = useFFContext()
 
-  return (query: FeatureQuery) => {
-    if (typeof query === 'string') {
-      return cache.has(query)
+  return function fn(flagQuery: FlagQuery) {
+    if (typeof flagQuery === 'string') {
+      return cache.has(flagQuery)
     }
 
-    for (const slug in query) {
-      if (cache.has(slug) !== query[slug]) {
+    if (Array.isArray(flagQuery)) {
+      for (const query of flagQuery) {
+        if (!fn(query)) {
+          return false
+        }
+      }
+
+      return true
+    }
+
+    for (let key of Reflect.ownKeys(flagQuery)) {
+      let phase: boolean
+
+      if (typeof key === 'string') {
+        phase = cache.has(key) === flagQuery[key]
+      } else {
+        if (key === Operators.OR) {
+          phase = false
+
+          for (const innerQuery of flagQuery[key]) {
+            if (fn(innerQuery)) {
+              phase = true
+              break
+            }
+          }
+        } else if (key === Operators.AND) {
+          phase = true
+
+          for (const innerQuery of flagQuery[key]) {
+            if (!fn(innerQuery)) {
+              phase = false
+              break
+            }
+          }
+        } else {
+          throw Error('Invalid Operator')
+        }
+      }
+
+      if (!phase) {
         return false
       }
     }
@@ -61,7 +115,7 @@ export function useFlagQuery() {
   }
 }
 
-export function useFlag(query: FeatureQuery) {
+export function useFlag(query: FlagQuery) {
   const flagQuery = useFlagQuery()
 
   return flagQuery(query)
