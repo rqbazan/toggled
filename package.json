@@ -21,6 +21,15 @@
     "src",
     "logo"
   ],
+  "keywords": [
+    "react",
+    "feature flags",
+    "flags",
+    "features",
+    "hooks",
+    "typescript",
+    "types"
+  ],
   "engines": {
     "node": ">=10"
   },
