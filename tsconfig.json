@@ -1,6 +1,7 @@
 {
   "include": ["src", "types"],
   "compilerOptions": {
+    "useUnknownInCatchVariables": false,
     "module": "esnext",
     "lib": ["dom", "esnext"],
     "importHelpers": true,
