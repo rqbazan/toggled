@@ -87,7 +87,7 @@ type FlagQuery =
 
 ```tsx
 // src/constants/domain.ts
-import { Operator } from 'toggled'
+import { Op } from 'toggled'
 
 // Note that each entry is a `FlagQuery`
 export const flagQueries: Record<string, FlagQuery> = {
@@ -105,12 +105,12 @@ export const flagQueries: Record<string, FlagQuery> = {
 
   // True if `'ff-3.1'` **or** `'ff-3.2'` is in the context
   FF_3_X: {
-    [Operator.OR]: ['ff-3.1', 'ff-3.2'],
+    [Op.OR]: ['ff-3.1', 'ff-3.2'],
   },
 
   // True if `'ff-4.1'` **and** `'ff-4.2'` is in the context
   FF_4_FULL: {
-    [Operator.AND]: ['ff-4.1', 'ff-4.2'],
+    [Op.AND]: ['ff-4.1', 'ff-4.2'],
   },
 
   // True if all the previous queries are true
@@ -122,10 +122,10 @@ export const flagQueries: Record<string, FlagQuery> = {
       'ff-2.2': false,
     },
     FF_3_X: {
-      [Operator.OR]: ['ff-3.1', 'ff-3.2'],
+      [Op.OR]: ['ff-3.1', 'ff-3.2'],
     },
     FF_4_FULL: {
-      [Operator.AND]: ['ff-4.1', 'ff-4.2'],
+      [Op.AND]: ['ff-4.1', 'ff-4.2'],
     },
   },
 }

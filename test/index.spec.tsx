@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { renderHook, RenderHookOptions } from '@testing-library/react-hooks'
-import { FeatureProvider, useFeature, useFlag, useFlagQuery, FeatureProviderProps, Operators } from '../src'
+import { FeatureProvider, useFeature, useFlag, useFlagQuery, FeatureProviderProps, Op } from '../src'
 import features from './fixtures/features.json'
 
 const messages = {
@@ -97,7 +97,7 @@ describe('useFlagQuery', () => {
 
     expect(
       flagQuery({
-        [Operators.AND]: ['example-1', 'example-2', 'example-3'],
+        [Op.AND]: ['example-1', 'example-2', 'example-3'],
       }),
     ).toBe(true)
   })
@@ -107,7 +107,7 @@ describe('useFlagQuery', () => {
 
     expect(
       flagQuery({
-        [Operators.AND]: ['foo', 'bar', 'example-1'],
+        [Op.AND]: ['foo', 'bar', 'example-1'],
       }),
     ).toBe(false)
   })
@@ -117,7 +117,7 @@ describe('useFlagQuery', () => {
 
     expect(
       flagQuery({
-        [Operators.OR]: ['example-1', 'xyz'],
+        [Op.OR]: ['example-1', 'xyz'],
       }),
     ).toBe(true)
   })
@@ -127,7 +127,7 @@ describe('useFlagQuery', () => {
 
     expect(
       flagQuery({
-        [Operators.OR]: ['foo', 'xyz'],
+        [Op.OR]: ['foo', 'xyz'],
       }),
     ).toBe(false)
   })
@@ -140,21 +140,21 @@ describe('useFlagQuery', () => {
         'example-1': true,
         'example-3': true,
         abc: false,
-        [Operators.OR]: ['xyz', 'abc', 'example-1'],
-        [Operators.OR]: [
+        [Op.OR]: ['xyz', 'abc', 'example-1'],
+        [Op.OR]: [
           'abc',
           {
             'example-2': true,
-            [Operators.AND]: ['example-2', 'example-3'],
+            [Op.AND]: ['example-2', 'example-3'],
           },
         ],
-        [Operators.AND]: ['example-2', 'example-3'],
-        [Operators.AND]: [
+        [Op.AND]: ['example-2', 'example-3'],
+        [Op.AND]: [
           'example-2',
           {
             jkl: false,
             '007': false,
-            [Operators.OR]: ['example-2', 'sample-1'],
+            [Op.OR]: ['example-2', 'sample-1'],
           },
         ],
       }),
@@ -169,21 +169,21 @@ describe('useFlagQuery', () => {
         'example-1': false,
         'example-3': false,
         abc: true,
-        [Operators.AND]: ['xyz', 'abc', 'example-1'],
-        [Operators.AND]: [
+        [Op.AND]: ['xyz', 'abc', 'example-1'],
+        [Op.AND]: [
           'abc',
           {
             'example-2': false,
-            [Operators.OR]: ['example-2', 'example-3'],
+            [Op.OR]: ['example-2', 'example-3'],
           },
         ],
-        [Operators.OR]: ['example-2', 'example-3'],
-        [Operators.OR]: [
+        [Op.OR]: ['example-2', 'example-3'],
+        [Op.OR]: [
           'example-2',
           {
             jkl: true,
             '007': true,
-            [Operators.AND]: ['example-2', 'sample-1'],
+            [Op.AND]: ['example-2', 'sample-1'],
           },
         ],
       }),

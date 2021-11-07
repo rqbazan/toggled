@@ -13,7 +13,7 @@ export interface FeatureContextValue<F extends DefaultFeature = DefaultFeature> 
   cache: Map<string, F>
 }
 
-export const Operators = {
+export const Op = {
   OR: Symbol('$or'),
   AND: Symbol('$and'),
 }
@@ -84,7 +84,7 @@ export function useFlagQuery() {
       if (typeof key === 'string') {
         phase = cache.has(key) === flagQuery[key]
       } else {
-        if (key === Operators.OR) {
+        if (key === Op.OR) {
           phase = false
 
           for (const innerQuery of flagQuery[key]) {
@@ -93,7 +93,7 @@ export function useFlagQuery() {
               break
             }
           }
-        } else if (key === Operators.AND) {
+        } else if (key === Op.AND) {
           phase = true
 
           for (const innerQuery of flagQuery[key]) {
@@ -103,7 +103,7 @@ export function useFlagQuery() {
             }
           }
         } else {
-          throw Error('Invalid Operator')
+          throw Error('Invalid Op')
         }
       }
 
