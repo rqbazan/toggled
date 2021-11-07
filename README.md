@@ -186,7 +186,7 @@ Hook that is used to get a binary output based on the existence of a feature in 
 
 ```ts
 interface UseFlag {
-  (query: string | { [slug: string]: boolean }): boolean
+  (query: FlagQuery): boolean
 }
 ```
 
