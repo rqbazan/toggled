@@ -140,17 +140,21 @@ function App() {
 
 ### `useFlagQuery`
 
-Hook that is used to get the magic function that can process a _feature query_ (FQ), which could be just the feature slug or, and more powerful, one object where the keys are slugs and the values flags.
+Hook that is used to get the magic function that can process a _flag query_, which could be just the feature slug, an flag queries array, or, and more powerful, an object query.
 
 #### Specification
 
 ```ts
-interface FlagQuery {
-  (query: string | { [slug: string]: boolean }): boolean
-}
+type FlagQuery =
+  | string
+  | FlagQuery[]
+  | {
+      [slug: string]: boolean
+      [operator: symbol]: FlagQuery[]
+    }
 
 interface UseFlagQuery {
-  (): FlagQuery
+  (): (query: FlagQuery) => boolean
 }
 ```
 
@@ -169,6 +173,8 @@ export default function App() {
   )
 }
 ```
+
+> For more use cases, [please go to the tests.](./test/index.spec.tsx)
 
 ### `useFlag`
 
@@ -192,10 +198,10 @@ import { useFlag } from 'toggled'
 export default function App() {
   const hasChat = useFlag('chat')
 
-  const hasDesignV2 = useFlag({ 'design-v2': true, 'design-v1': false })
+  const hasDesignV2Only = useFlag({ 'design-v2': true, 'design-v1': false })
 
   return (
-    <Layout designV2={hasDesignV2}>
+    <Layout designV2={hasDesignV2Only}>
       {hasChat && <ChatWidget>}
     </Layout>
   )

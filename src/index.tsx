@@ -28,7 +28,8 @@ export type FlagQuery =
 
 const NO_PROVIDER = Symbol('No provider')
 
-export const FeatureContext = React.createContext<any>(NO_PROVIDER)
+// @ts-ignore
+export const FeatureContext = React.createContext<FeatureContextValue>(NO_PROVIDER)
 
 export function FeatureProvider<F extends DefaultFeature = DefaultFeature>(props: FeatureProviderProps<F>) {
   const { features, children } = props
@@ -43,7 +44,7 @@ export function FeatureProvider<F extends DefaultFeature = DefaultFeature>(props
 }
 
 function useFFContext() {
-  const contextValue = React.useContext<FeatureContextValue>(FeatureContext)
+  const contextValue = React.useContext(FeatureContext)
 
   // @ts-ignore
   if (contextValue === NO_PROVIDER) {
