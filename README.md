@@ -91,10 +91,10 @@ import { Op } from 'toggled'
 
 // Note that each entry is a `FlagQuery`
 export const flagQueries: Record<string, FlagQuery> = {
-  // True if the slug is in the context.
+  // True if the slug is in the context
   FF_1: 'ff-1',
 
-  // True if all slugs are in the context.
+  // True if all the slugs are in the context
   FF_2_FULL: ['ff-2.1', 'ff-2.2'],
 
   // True if `'ff-2.1'` is in the context and `'ff-2.2'` is not
@@ -108,7 +108,7 @@ export const flagQueries: Record<string, FlagQuery> = {
     [Op.OR]: ['ff-3.1', 'ff-3.2'],
   },
 
-  // True if `'ff-4.1'` **and** `'ff-4.2'` is in the context
+  // True if `'ff-4.1'` **and** `'ff-4.2'` are in the context
   FF_4_FULL: {
     [Op.AND]: ['ff-4.1', 'ff-4.2'],
   },
