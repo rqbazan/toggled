@@ -103,7 +103,7 @@ export function useFlagQuery() {
             }
           }
         } else {
-          throw Error('Invalid Op')
+          throw Error('Invalid Operator')
         }
       }
 
