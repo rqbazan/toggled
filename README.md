@@ -67,6 +67,70 @@ declare module 'toggled' {
 }
 ```
 
+### `FlagQuery` <sup>_Type_</sup>
+
+It could be the feature slug or an flag queries array or more powerful, an object query.
+
+#### Specification
+
+```ts
+type FlagQuery =
+  | string
+  | FlagQuery[]
+  | {
+      [slug: string]: boolean
+      [operator: symbol]: FlagQuery[]
+    }
+```
+
+#### Example
+
+```tsx
+// src/constants/domain.ts
+import { Operator } from 'toggled'
+
+// Note that each entry is a `FlagQuery`
+export const flagQueries: Record<string, FlagQuery> = {
+  // True if the slug is in the context.
+  FF_1: 'ff-1',
+
+  // True if all slugs are in the context.
+  FF_2_FULL: ['ff-2.1', 'ff-2.2'],
+
+  // True if `'ff-2.1'` is in the context and `'ff-2.2'` is not
+  FF_2_1_ONLY: {
+    'ff-2.1': true,
+    'ff-2.2': false,
+  },
+
+  // True if `'ff-3.1'` **or** `'ff-3.2'` is in the context
+  FF_3_X: {
+    [Operator.OR]: ['ff-3.1', 'ff-3.2'],
+  },
+
+  // True if `'ff-4.1'` **and** `'ff-4.2'` is in the context
+  FF_4_FULL: {
+    [Operator.AND]: ['ff-4.1', 'ff-4.2'],
+  },
+
+  // True if all the previous queries are true
+  COMPLEX: {
+    FF_1: 'ff-1',
+    FF_2_FULL: ['ff-2.1', 'ff-2.2'],
+    FF_2_1_ONLY: {
+      'ff-2.1': true,
+      'ff-2.2': false,
+    },
+    FF_3_X: {
+      [Operator.OR]: ['ff-3.1', 'ff-3.2'],
+    },
+    FF_4_FULL: {
+      [Operator.AND]: ['ff-4.1', 'ff-4.2'],
+    },
+  },
+}
+```
+
 ### `FeatureContext`
 
 Library context, exported for no specific reason, avoid using it and prefer the custom hooks, or open a PR to add a new one that obligates you to use the `FeatureContext`.
@@ -140,19 +204,11 @@ function App() {
 
 ### `useFlagQuery`
 
-Hook that is used to get the magic function that can process a _flag query_, which could be just the feature slug, an flag queries array, or, and more powerful, an object query.
+Hook that is used to get the magic function that can process a _flag query_.
 
 #### Specification
 
 ```ts
-type FlagQuery =
-  | string
-  | FlagQuery[]
-  | {
-      [slug: string]: boolean
-      [operator: symbol]: FlagQuery[]
-    }
-
 interface UseFlagQuery {
   (): (query: FlagQuery) => boolean
 }
@@ -207,3 +263,7 @@ export default function App() {
   )
 }
 ```
+
+## License
+
+MIT © [Ricardo Q. Bazan](https://rcrd.space)
