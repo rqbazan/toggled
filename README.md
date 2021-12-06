@@ -78,8 +78,13 @@ type FlagQuery =
   | string
   | FlagQuery[]
   | {
+      $or: FlagQuery[]
+    }
+  | {
+      $and: FlagQuery[]
+    }
+  | {
       [slug: string]: boolean
-      [operator: symbol]: FlagQuery[]
     }
 ```
 
@@ -202,14 +207,14 @@ function App() {
 }
 ```
 
-### `useFlagQuery`
+### `useFlagQueryFn`
 
 Hook that is used to get the magic function that can process a _flag query_.
 
 #### Specification
 
 ```ts
-interface UseFlagQuery {
+interface UseFlagQueryFn {
   (): (query: FlagQuery) => boolean
 }
 ```
@@ -217,14 +222,14 @@ interface UseFlagQuery {
 #### Example
 
 ```tsx
-import { useFlagQuery } from 'toggled'
+import { useFlagQueryFn } from 'toggled'
 
 export default function App() {
-  const flagQuery = useFlagQuery()
+  const flagQueryFn = useFlagQueryFn()
 
   return (
-    <Layout designV2={flagQuery({ 'design-v2': true, 'design-v1': false })}>
-      {flagQuery('chat') && <ChatWidget>}
+    <Layout designV2={flagQueryFn({ 'design-v2': true, 'design-v1': false })}>
+      {flagQueryFn('chat') && <ChatWidget>}
     </Layout>
   )
 }
@@ -236,7 +241,7 @@ export default function App() {
 
 Hook that is used to get a binary output based on the existence of a feature in the context. So, if the feature is in the context then the flag will be `true`, otherwise `false`.
 
-> The `useFlagQuery` hook is used internally.
+> The `useFlagQueryFn` hook is used internally.
 
 #### Specification
 
@@ -260,6 +265,66 @@ export default function App() {
     <Layout designV2={hasDesignV2Only}>
       {hasChat && <ChatWidget>}
     </Layout>
+  )
+}
+```
+
+### `<Flag />`
+
+Component to apply conditional rendering using a `flagQuery`
+
+#### Specification
+
+```ts
+interface FlagProps {
+  flagQuery: FlagQuery
+  children: React.ReactNode
+}
+```
+
+#### Example
+
+```tsx
+import { Flag } from 'toggled'
+
+export default function App() {
+  return (
+    <Flag flagQuery={{ 'design-v2': true, 'design-v1': false }}>
+      <Layout designV2={hasDesignV2Only}>
+        <Flag flagQuery="chat">
+          <ChatWidget>
+        </Flag>
+      </Layout>
+    </Flag>
+  )
+}
+```
+
+### `<Feature />`
+
+Component to consume a feature object declaratively instead of `useFeature`
+
+#### Specification
+
+```ts
+export interface FeatureProps {
+  slug: string
+  children(feature: DefaultFeature): React.ReactElement
+}
+```
+
+#### Example
+
+```tsx
+import { Feature } from 'toggled'
+
+export default function App() {
+  return (
+    <Feature slug="chat">
+      {feature => {
+        return <ChatWidget settings={feature.settings}>
+      }}
+    </Feature>
   )
 }
 ```

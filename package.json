@@ -51,6 +51,7 @@
   },
   "devDependencies": {
     "@size-limit/preset-small-lib": "^4.11.0",
+    "@testing-library/react": "^12.1.2",
     "@testing-library/react-hooks": "^7.0.2",
     "@types/react": "^17.0.34",
     "@types/react-dom": "^17.0.11",
@@ -81,11 +82,11 @@
   "size-limit": [
     {
       "path": "dist/toggled.cjs.production.min.js",
-      "limit": "500 B"
+      "limit": "600 B"
     },
     {
       "path": "dist/toggled.esm.js",
-      "limit": "550 B"
+      "limit": "650 B"
     }
   ],
   "resolutions": {

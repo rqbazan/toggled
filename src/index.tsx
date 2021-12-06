@@ -4,46 +4,64 @@ export interface DefaultFeature {
   slug: string
 }
 
-export interface FeatureProviderProps<F extends DefaultFeature = DefaultFeature> {
-  features: F[]
-  children: React.ReactNode
-}
+export type TCache = Record<string, DefaultFeature>
 
-export interface FeatureContextValue<F extends DefaultFeature = DefaultFeature> {
-  cache: Map<string, F>
+export type FeatureProviderProps =
+  | {
+      cache: TCache
+      children: React.ReactNode
+    }
+  | {
+      features: DefaultFeature[]
+      children: React.ReactNode
+    }
+
+export interface FeatureContextValue {
+  cache: TCache
 }
 
 export const Op = {
-  OR: Symbol('$or'),
-  AND: Symbol('$and'),
+  OR: '$or' as const,
+  AND: '$and' as const,
 }
 
 export type FlagQuery =
   | string
   | FlagQuery[]
   | {
+      [Op.OR]: FlagQuery[]
+    }
+  | {
+      [Op.AND]: FlagQuery[]
+    }
+  | {
       [slug: string]: boolean
-      [operator: symbol]: FlagQuery[]
     }
 
-const NO_PROVIDER = Symbol('No provider')
+const NO_PROVIDER = '__toggled_no_provder_id__'
 
 // @ts-ignore
 export const FeatureContext = React.createContext<FeatureContextValue>(NO_PROVIDER)
 
-export function FeatureProvider<F extends DefaultFeature = DefaultFeature>(props: FeatureProviderProps<F>) {
-  const { features, children } = props
+export function createCache<F extends DefaultFeature = DefaultFeature>(features: F[]) {
+  return features.reduce((cache, current) => {
+    cache[current.slug] = current
+    return cache
+  }, {} as Record<string, F>)
+}
+
+export function FeatureProvider(props: FeatureProviderProps) {
+  // @ts-expect-error
+  const { features, cache, children } = props
 
   const contextValue = React.useMemo(() => {
-    const cache = new Map(features.map(feature => [feature.slug, feature]))
-
-    return { cache }
-  }, [features])
+    return { cache: cache ?? createCache(features) }
+  }, [cache, features])
 
   return <FeatureContext.Provider value={contextValue}>{children}</FeatureContext.Provider>
 }
 
-function useFFContext() {
+function useToggledContext() {
   const contextValue = React.useContext(FeatureContext)
 
   // @ts-ignore
@@ -55,22 +73,20 @@ function useFFContext() {
 }
 
 export function useFeature(slug: string) {
-  const { cache } = useFFContext()
+  const { cache } = useToggledContext()
 
-  return cache.get(slug)
+  return cache[slug]
 }
 
-export function useFlagQuery() {
-  const { cache } = useFFContext()
-
-  return function fn(flagQuery: FlagQuery) {
+export function createFlagQueryFn(cache: Record<string, DefaultFeature>) {
+  return function flagQueryFn(flagQuery: FlagQuery) {
     if (typeof flagQuery === 'string') {
-      return cache.has(flagQuery)
+      return Boolean(cache[flagQuery])
     }
 
     if (Array.isArray(flagQuery)) {
       for (const query of flagQuery) {
-        if (!fn(query)) {
+        if (!flagQueryFn(query)) {
           return false
         }
       }
@@ -78,33 +94,32 @@ export function useFlagQuery() {
       return true
     }
 
-    for (let key of Reflect.ownKeys(flagQuery)) {
+    for (let key in flagQuery) {
       let phase: boolean
 
-      if (typeof key === 'string') {
-        phase = cache.has(key) === flagQuery[key]
-      } else {
-        if (key === Op.OR) {
-          phase = false
+      if (key === Op.OR) {
+        phase = false
 
-          for (const innerQuery of flagQuery[key]) {
-            if (fn(innerQuery)) {
-              phase = true
-              break
-            }
+        // @ts-expect-error
+        for (const innerQuery of flagQuery[key]) {
+          if (flagQueryFn(innerQuery)) {
+            phase = true
+            break
           }
-        } else if (key === Op.AND) {
-          phase = true
-
-          for (const innerQuery of flagQuery[key]) {
-            if (!fn(innerQuery)) {
-              phase = false
-              break
-            }
-          }
-        } else {
-          throw Error('Invalid Operator')
         }
+      } else if (key === Op.AND) {
+        phase = true
+
+        // @ts-expect-error
+        for (const innerQuery of flagQuery[key]) {
+          if (!flagQueryFn(innerQuery)) {
+            phase = false
+            break
+          }
+        }
+      } else {
+        // @ts-expect-error
+        phase = Boolean(cache[key]) === flagQuery[key]
       }
 
       if (!phase) {
@@ -116,8 +131,44 @@ export function useFlagQuery() {
   }
 }
 
-export function useFlag(query: FlagQuery) {
-  const flagQuery = useFlagQuery()
+export function useFlagQueryFn() {
+  const { cache } = useToggledContext()
 
-  return flagQuery(query)
+  return React.useMemo(() => createFlagQueryFn(cache), [cache])
+}
+
+export function useFlag(flagQuery: FlagQuery) {
+  const flagQueryFn = useFlagQueryFn()
+
+  return flagQueryFn(flagQuery)
+}
+
+export interface FlagProps {
+  flagQuery: FlagQuery
+  children: React.ReactNode
+}
+
+export function Flag({ flagQuery, children }: FlagProps) {
+  const enabled = useFlag(flagQuery)
+
+  if (!enabled) {
+    return null
+  }
+
+  return children as React.ReactElement
+}
+
+export interface FeatureProps {
+  slug: string
+  children(feature: DefaultFeature): React.ReactElement
+}
+
+export function Feature({ slug, children }: FeatureProps) {
+  const feature = useFeature(slug)
+
+  if (!feature) {
+    return null
+  }
+
+  return children(feature)
 }
