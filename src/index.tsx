@@ -18,6 +18,7 @@ export type FeatureProviderProps =
 
 export interface FeatureContextValue {
   cache: TCache
+  flagQueryFn: ReturnType<typeof createFlagQueryFn>
 }
 
 export const Op = {
@@ -48,34 +49,6 @@ export function createCache<F extends DefaultFeature = DefaultFeature>(features:
     cache[current.slug] = current
     return cache
   }, {} as Record<string, F>)
-}
-
-export function FeatureProvider(props: FeatureProviderProps) {
-  // @ts-expect-error
-  const { features, cache, children } = props
-
-  const contextValue = React.useMemo(() => {
-    return { cache: cache ?? createCache(features) }
-  }, [cache, features])
-
-  return <FeatureContext.Provider value={contextValue}>{children}</FeatureContext.Provider>
-}
-
-function useToggledContext() {
-  const contextValue = React.useContext(FeatureContext)
-
-  // @ts-ignore
-  if (contextValue === NO_PROVIDER) {
-    throw new Error('Component must be wrapped with FeatureProvider.')
-  }
-
-  return contextValue
-}
-
-export function useFeature(slug: string) {
-  const { cache } = useToggledContext()
-
-  return cache[slug]
 }
 
 export function createFlagQueryFn(cache: Record<string, DefaultFeature>) {
@@ -131,10 +104,43 @@ export function createFlagQueryFn(cache: Record<string, DefaultFeature>) {
   }
 }
 
-export function useFlagQueryFn() {
+export function FeatureProvider(props: FeatureProviderProps) {
+  // @ts-expect-error
+  const { features, cache, children } = props
+
+  const contextValue = React.useMemo(() => {
+    const _cache = cache ?? createCache(features)
+
+    return {
+      cache: _cache,
+      flagQueryFn: createFlagQueryFn(_cache),
+    }
+  }, [cache, features])
+
+  return <FeatureContext.Provider value={contextValue}>{children}</FeatureContext.Provider>
+}
+
+function useToggledContext() {
+  const contextValue = React.useContext(FeatureContext)
+
+  // @ts-ignore
+  if (contextValue === NO_PROVIDER) {
+    throw new Error('Component must be wrapped with FeatureProvider.')
+  }
+
+  return contextValue
+}
+
+export function useFeature(slug: string) {
   const { cache } = useToggledContext()
 
-  return React.useMemo(() => createFlagQueryFn(cache), [cache])
+  return cache[slug]
+}
+
+export function useFlagQueryFn() {
+  const { flagQueryFn } = useToggledContext()
+
+  return flagQueryFn
 }
 
 export function useFlag(flagQuery: FlagQuery) {
